@@ -58,9 +58,9 @@ export default function SpeakTheAnimal() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center max-w-4xl mx-auto">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center max-w-4xl mx-auto">
       <div className="w-full flex justify-between items-center mb-12">
-        <Link to="/english" className="back-btn"><ArrowLeft className="w-5 h-5" /> Back</Link>
+        <Link to="/english" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> Back</Link>
         <div className="score-badge">
           <Star className="w-6 h-6 text-yellow-500 fill-yellow-400" />
           <span className="text-xl font-bold">{profile?.userScore || 0}</span>

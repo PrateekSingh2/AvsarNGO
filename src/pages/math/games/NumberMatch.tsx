@@ -58,11 +58,11 @@ export default function NumberMatch() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center">
       <div className="w-full max-w-3xl flex justify-between items-center mb-6">
-        <Link to="/math" className="back-btn"><ArrowLeft className="w-5 h-5" /> गणित</Link>
+        <Link to="/math" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> गणित</Link>
         <h1 className="text-2xl md:text-3xl font-black text-white text-shadow">🃏 संख्या मिलाओ!</h1>
-        <button onClick={() => setCards(shuffle([...cards.map(c => ({ ...c, flipped: false, matched: false }))]))} className="back-btn">
+        <button onClick={() => setCards(shuffle([...cards.map(c => ({ ...c, flipped: false, matched: false }))]))} className="back-btn tap-target">
           <RefreshCw className="w-4 h-4" />
         </button>
       </div>
