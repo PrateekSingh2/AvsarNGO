@@ -35,9 +35,9 @@ export default function NumberTracing() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center">
       <div className="w-full max-w-2xl flex justify-between items-center mb-6">
-        <Link to="/math" className="back-btn"><ArrowLeft className="w-5 h-5" /> गणित</Link>
+        <Link to="/math" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> गणित</Link>
         <h1 className="text-2xl font-black text-white text-shadow">✍️ Number Tracing</h1>
         <div className="back-btn font-black text-yellow-300">{currentIdx + 1}/{NUMBERS.length}</div>
       </div>
@@ -53,7 +53,7 @@ export default function NumberTracing() {
           <CanvasDrawer bgText={current.num} onDrawStart={() => speakHindi(current.audio)} />
           
           <div className="mt-8 text-center max-w-2xl mx-auto">
-            <button onClick={handleNext} className="action-btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white w-full max-w-sm shadow-xl">
+            <button onClick={handleNext} className="action-btn tap-target bg-gradient-to-r from-emerald-500 to-teal-500 text-white w-full max-w-sm shadow-xl">
               {currentIdx < NUMBERS.length - 1 ? 'Next Number →' : 'Done! 🎉'}
             </button>
           </div>

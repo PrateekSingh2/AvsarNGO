@@ -1,0 +1,17 @@
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft, Images, Lightbulb, Palette, Wand2 } from 'lucide-react';
+import { CanvasDrawer } from '../components/CanvasDrawer';
+import { MagicCard } from '../components/kids/KidsUI';
+import { audioManager } from '../lib/audioManager';
+
+const prompts = ['Draw your dream school', 'Make a garden for AVA', 'Create a number monster', 'Draw अ with flowers', 'Design a reward badge'];
+const key = 'avsar-art-gallery';
+
+export default function ArtStudio() {
+  const [gallery, setGallery] = useState<string[]>(() => JSON.parse(localStorage.getItem(key) || '[]'));
+  const [prompt, setPrompt] = useState(0);
+  useEffect(() => { audioManager.playMusic('drawing'); return () => audioManager.stopMusic(); }, []);
+  const save = (image: string) => { const next = [image, ...gallery].slice(0, 6); setGallery(next); localStorage.setItem(key, JSON.stringify(next)); };
+  return <section className="px-4 py-8 space-y-6"><div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-amber-300 via-pink-400 to-violet-500 p-6 text-white shadow-2xl"><Link to="/" className="inline-flex rounded-full bg-white/85 px-4 py-2 font-black text-slate-800"><ArrowLeft className="mr-2 h-5 w-5" /> Home</Link><div className="mt-5 grid gap-4 md:grid-cols-[1fr_auto]"><div><p className="font-black uppercase tracking-widest text-white/75">Creative Studio</p><h1 className="text-5xl font-black">AVA Art Studio</h1><p className="mt-2 text-lg font-bold text-white/85">Paint, stamp, trace, save to your gallery, and turn learning into creativity.</p></div><div className="grid h-28 w-28 place-items-center rounded-[2rem] bg-white/25 text-6xl backdrop-blur">🎨</div></div></div><div className="grid gap-5 lg:grid-cols-[1fr_20rem]"><MagicCard className="overflow-hidden p-3"><CanvasDrawer fullScreen={false} onSave={save} /></MagicCard><div className="space-y-4"><MagicCard className="p-5"><div className="mb-3 flex items-center gap-2"><Lightbulb className="text-amber-500" /><h2 className="text-2xl font-black">Creative Mission</h2></div><p className="rounded-2xl bg-white/70 p-4 text-xl font-black text-slate-800">{prompts[prompt]}</p><button onClick={() => { setPrompt((prompt + 1) % prompts.length); audioManager.playSound('reward'); }} className="mt-3 tap-target rounded-full bg-gradient-to-r from-amber-300 to-pink-400 px-5 py-3 font-black text-slate-900"><Wand2 className="mr-2 inline h-5 w-5" /> New idea</button></MagicCard><MagicCard className="p-5"><div className="mb-3 flex items-center gap-2"><Palette className="text-pink-500" /><h2 className="text-2xl font-black">Studio Skills</h2></div><ul className="space-y-2 font-bold text-slate-700 dark:text-white/80"><li>✅ Brush size and colors</li><li>✅ Stickers, stars, animals, and shapes</li><li>✅ Undo, redo, clear, and save</li><li>✅ Gallery with latest masterpieces</li></ul></MagicCard></div></div><MagicCard className="p-5"><div className="mb-4 flex items-center gap-2"><Images className="text-violet-500" /><h2 className="text-2xl font-black">My Gallery</h2></div>{gallery.length === 0 ? <p className="font-bold text-slate-600 dark:text-white/70">Save a drawing to see it here.</p> : <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">{gallery.map((img, i) => <img key={img.slice(0,40)+i} src={img} alt={`Saved artwork ${i + 1}`} className="h-32 w-full rounded-2xl border-4 border-white object-cover shadow" />)}</div>}</MagicCard></section>;
+}

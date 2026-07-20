@@ -9,9 +9,14 @@ export interface Profile {
   unlockedLevels: string[];
   ownedPlants: string[];
   badges: string[];
+  xp?: number;
+  streak?: number;
+  completedLessons?: number;
+  gamesPlayed?: number;
+  inventory?: string[];
 }
 
-const DEFAULT_LEVELS = ['math-lesson-1', 'english-lesson-1', 'hindi-lesson-1'];
+const DEFAULT_LEVELS = ['math-lesson-1', 'math-lesson-4', 'english-lesson-1', 'english-lesson-4', 'hindi-lesson-1', 'hindi-lesson-4'];
 
 interface AppState {
   profiles: Profile[];
@@ -19,6 +24,7 @@ interface AppState {
   addProfile: (name: string, avatar: string) => void;
   setActiveProfile: (id: string) => void;
   addScore: (points: number) => void;
+  addXp: (points: number) => void;
   unlockLevel: (levelId: string) => void;
   buyPlant: (plantId: string, cost: number) => boolean;
   clearPlants: () => void;
@@ -39,7 +45,12 @@ export const useStore = create<AppState>()(
           userScore: 250, // Starting bonus!
           unlockedLevels: DEFAULT_LEVELS,
           ownedPlants: [],
-          badges: [],
+          badges: ['first_lesson'],
+          xp: 250,
+          streak: 7,
+          completedLessons: 3,
+          gamesPlayed: 2,
+          inventory: ['starter-cape', 'sunny-theme'],
         };
         return {
           profiles: [...state.profiles, newProfile],
@@ -56,6 +67,11 @@ export const useStore = create<AppState>()(
             p.id === state.activeProfileId ? { ...p, userScore: p.userScore + points } : p
           )
         };
+      }),
+
+      addXp: (points) => set((state) => {
+        if (!state.activeProfileId) return state;
+        return { profiles: state.profiles.map(p => p.id === state.activeProfileId ? { ...p, xp: (p.xp || p.userScore || 0) + points } : p) };
       }),
 
       unlockLevel: (levelId) => set((state) => {

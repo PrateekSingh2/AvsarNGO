@@ -18,7 +18,7 @@ export default function TrophyRoom() {
   return (
     <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col max-w-5xl mx-auto">
       <div className="flex items-center justify-between mb-8">
-        <Link to="/" className="back-btn"><ArrowLeft className="w-5 h-5" /> Home</Link>
+        <Link to="/" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> Home</Link>
         <div className="flex items-center gap-3">
           <Trophy className="w-8 h-8 text-yellow-500 fill-yellow-400 drop-shadow-md" />
           <h1 className="text-3xl md:text-4xl font-black text-black dark:text-white drop-shadow-sm">Trophy Room</h1>

@@ -59,11 +59,11 @@ export default function VyasjanMatch() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center">
       <div className="w-full max-w-2xl flex justify-between items-center mb-6">
-        <Link to="/hindi" className="back-btn"><ArrowLeft className="w-5 h-5" /> हिंदी</Link>
+        <Link to="/hindi" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> हिंदी</Link>
         <h1 className="text-2xl font-black text-white text-shadow">🃏 व्यंजन Match</h1>
-        <button onClick={() => { setCards(buildCards()); setSelected([]); setWon(false); }} className="back-btn">
+        <button onClick={() => { setCards(buildCards()); setSelected([]); setWon(false); }} className="back-btn tap-target">
           <RefreshCw className="w-4 h-4" />
         </button>
       </div>

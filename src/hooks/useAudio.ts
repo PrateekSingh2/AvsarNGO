@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import confetti from 'canvas-confetti';
+import { audioManager } from '../lib/audioManager';
 
 // Hindi audio phrases using Web Speech API with hi-IN locale
 const HINDI_CHEER_PHRASES = [
@@ -49,36 +50,37 @@ export function useAudio() {
     return voice || null;
   }, []);
 
-  const speak = useCallback((text: string, lang: string = 'hi-IN') => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = lang;
-      const voice = getVoice(lang);
-      if (voice) utterance.voice = voice;
-      utterance.rate = 0.75; // Slower pace for kids
-      utterance.pitch = 1.2;
-      utterance.volume = 1;
-      window.speechSynthesis.speak(utterance);
-    }
+  const speakWithVoice = useCallback((text: string, lang: string, pitch = 1.2) => {
+    if (audioManager.isMuted() || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = lang;
+    const voice = getVoice(lang);
+    if (voice) utterance.voice = voice;
+    utterance.rate = lang.startsWith('hi') ? 0.68 : 0.78;
+    utterance.pitch = pitch;
+    utterance.volume = 1;
+    utterance.onerror = () => {
+      const retry = new SpeechSynthesisUtterance(text);
+      retry.lang = lang.startsWith('hi') ? 'hi' : lang;
+      retry.rate = 0.7;
+      retry.pitch = pitch;
+      window.speechSynthesis.speak(retry);
+    };
+    window.speechSynthesis.speak(utterance);
   }, [getVoice]);
+
+  const speak = useCallback((text: string, lang: string = 'hi-IN') => {
+    speakWithVoice(text, lang, 1.2);
+  }, [speakWithVoice]);
 
   const speakHindi = useCallback((text: string) => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'hi-IN';
-      const voice = getVoice('hi-IN');
-      if (voice) utterance.voice = voice;
-      utterance.rate = 0.75; // Slower pace for kids
-      utterance.pitch = 1.25;
-      utterance.volume = 1;
-      window.speechSynthesis.speak(utterance);
-    }
-  }, [getVoice]);
+    speakWithVoice(text, 'hi-IN', 1.28);
+  }, [speakWithVoice]);
 
   const speakEnglish = useCallback((text: string) => {
-    if ('speechSynthesis' in window) {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
@@ -93,19 +95,11 @@ export function useAudio() {
 
   const cheerHindi = useCallback(() => {
     const phrase = HINDI_CHEER_PHRASES[Math.floor(Math.random() * HINDI_CHEER_PHRASES.length)];
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(phrase);
-      utterance.lang = 'hi-IN';
-      const voice = getVoice('hi-IN');
-      if (voice) utterance.voice = voice;
-      utterance.rate = 0.75; // Slower pace for kids
-      utterance.pitch = 1.4;
-      window.speechSynthesis.speak(utterance);
-    }
-  }, [getVoice]);
+    speakWithVoice(phrase, 'hi-IN', 1.4);
+  }, [speakWithVoice]);
 
   const playBoop = useCallback(() => {
+    audioManager.playSound('wrong');
     try {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       const ctx = new AudioContext();
@@ -136,6 +130,7 @@ export function useAudio() {
   }, [speak]);
 
   const playDing = useCallback(() => {
+    audioManager.playSound('correct');
     try {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       const ctx = new AudioContext();
@@ -154,6 +149,7 @@ export function useAudio() {
   }, []);
 
   const playCheer = useCallback(() => {
+    audioManager.playSound('achievement');
     cheerHindi();
     const duration = 3500;
     const animationEnd = Date.now() + duration;

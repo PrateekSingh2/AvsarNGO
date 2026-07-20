@@ -2,9 +2,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 @layer base {
   *, *::before, *::after {
@@ -18,7 +15,7 @@
     overflow-x: hidden;
   }
   body {
-    font-family: 'Outfit', 'Fredoka', 'Comic Sans MS', sans-serif;
+    font-family: 'Fredoka', 'Nunito', 'Comic Sans MS', sans-serif;
     @apply text-slate-900 transition-colors duration-500;
     
     /* Vibrant Animated Mesh Gradient Light Mode */
@@ -166,3 +163,8 @@
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); border-radius: 3px; }
+
+:focus-visible{outline:4px solid #fbbf24;outline-offset:4px}.tap-target{min-height:44px;min-width:44px}.dyslexia-friendly{font-family:Arial, Verdana, sans-serif;letter-spacing:.04em;line-height:1.6}
+.lesson-screen{position:relative;min-height:calc(100vh - 5rem);isolation:isolate}.lesson-screen:before{content:"";position:absolute;inset:1rem;border-radius:2.5rem;background:linear-gradient(135deg,rgba(255,255,255,.36),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.55);box-shadow:0 24px 80px rgba(31,38,135,.12);z-index:-1}.lesson-screen:after{content:"✨ 🌟 🫧";position:absolute;right:2rem;top:1rem;font-size:2rem;opacity:.28;animation:floatUp 4s ease-in-out infinite;z-index:-1}.learning-card{background:rgba(255,255,255,.68);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.75);border-radius:2.25rem;box-shadow:0 20px 70px rgba(31,38,135,.18)}.dark .learning-card{background:rgba(15,23,42,.68);border-color:rgba(255,255,255,.12)}.lesson-screen button,.lesson-screen a{touch-action:manipulation}.lesson-screen h1{letter-spacing:-.03em}
+:root{color-scheme:light}.dark{color-scheme:dark}.dark .glass-card,.dark .hub-card,.dark .sticker-card{background-color:rgba(15,23,42,.72);border-color:rgba(255,255,255,.12)}.sticker-card,.hub-card,.glass-card,.learning-card{max-width:100%}@media(max-width:640px){.score-badge{padding:.55rem .85rem;border-radius:1rem}.action-btn{font-size:1.125rem;padding:.75rem 1.1rem}.back-btn{padding:.65rem .9rem}.lesson-screen{padding-bottom:9rem}.lesson-screen:before{inset:.35rem;border-radius:1.5rem}.lesson-screen:after{font-size:1.25rem;right:1rem}.learning-card{border-radius:1.5rem}.sticker-card{min-height:8rem}.hub-card{padding:1rem}}
+.dark body,.dark #root{background:#020617;color:#f8fafc}.dark nav,.dark footer{color:#f8fafc}.dark .bg-white\/70,.dark .bg-white\/80,.dark .bg-white\/85,.dark .bg-white\/90{background-color:rgba(15,23,42,.82)!important}.dark .text-slate-900,.dark .text-slate-800,.dark .text-black{color:#f8fafc!important}.dark .text-slate-700,.dark .text-slate-600,.dark .text-slate-500{color:#cbd5e1!important}.dark .border-black{border-color:rgba(255,255,255,.22)!important}.dark .shadow,.dark .shadow-xl,.dark .shadow-2xl{box-shadow:0 18px 60px rgba(0,0,0,.42)!important}.dark .lesson-screen:before{background:linear-gradient(135deg,rgba(15,23,42,.72),rgba(30,41,59,.38));border-color:rgba(255,255,255,.12)}
