@@ -35,9 +35,9 @@ export default function HindiLesson2() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center justify-center">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center justify-center">
       <div className="absolute top-4 left-4 md:top-8 md:left-8">
-        <Link to="/hindi" className="back-btn"><ArrowLeft className="w-5 h-5" /> हिंदी</Link>
+        <Link to="/hindi" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> हिंदी</Link>
       </div>
 
       <div className="w-full max-w-lg mb-8">
@@ -65,7 +65,7 @@ export default function HindiLesson2() {
             {letter.char}
           </motion.div>
           <p className="text-white/60 text-xl font-bold mb-8">({letter.name})</p>
-          <button onClick={handleNext} className="action-btn bg-gradient-to-r from-violet-500 to-purple-600 text-white w-full">
+          <button onClick={handleNext} className="action-btn tap-target bg-gradient-to-r from-violet-500 to-purple-600 text-white w-full">
             {current < VYASJAN.length - 1 ? 'अगला →' : 'शाबाश! 🎉'}
           </button>
         </motion.div>

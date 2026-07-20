@@ -88,9 +88,9 @@ export default function WordBuilder() {
   const currentSlots = Object.keys(slots).length ? slots : initSlots();
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center">
       <div className="w-full max-w-xl flex justify-between items-center mb-6">
-        <Link to="/english" className="back-btn"><ArrowLeft className="w-5 h-5" /> English</Link>
+        <Link to="/english" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> English</Link>
         <h1 className="text-2xl font-black text-white text-shadow">🐱 Word Builder</h1>
         <div className="back-btn font-black text-yellow-300">{roundIdx + 1}/{WORDS.length}</div>
       </div>

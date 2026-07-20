@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import confetti from 'canvas-confetti';
+import { audioManager } from '../lib/audioManager';
 
 // Hindi audio phrases using Web Speech API with hi-IN locale
 const HINDI_CHEER_PHRASES = [
@@ -106,6 +107,7 @@ export function useAudio() {
   }, [getVoice]);
 
   const playBoop = useCallback(() => {
+    audioManager.playSound('wrong');
     try {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       const ctx = new AudioContext();
@@ -136,6 +138,7 @@ export function useAudio() {
   }, [speak]);
 
   const playDing = useCallback(() => {
+    audioManager.playSound('correct');
     try {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       const ctx = new AudioContext();
@@ -154,6 +157,7 @@ export function useAudio() {
   }, []);
 
   const playCheer = useCallback(() => {
+    audioManager.playSound('achievement');
     cheerHindi();
     const duration = 3500;
     const animationEnd = Date.now() + duration;

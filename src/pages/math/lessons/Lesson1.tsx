@@ -36,9 +36,9 @@ export default function MathLesson1() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center justify-center">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center justify-center">
       <div className="absolute top-4 left-4 md:top-8 md:left-8">
-        <Link to="/math" className="back-btn"><ArrowLeft className="w-5 h-5" /> गणित</Link>
+        <Link to="/math" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> गणित</Link>
       </div>
 
       <div className="w-full max-w-lg mb-8">
@@ -54,7 +54,7 @@ export default function MathLesson1() {
         <motion.div
           key={current}
           initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.85 }}
-          className="glass-card p-8 md:p-14 text-center w-full max-w-sm"
+          className="learning-card p-8 md:p-14 text-center w-full max-w-sm"
         >
           <motion.div
             className="text-8xl md:text-[120px] font-black text-slate-900 dark:text-white drop-shadow-md mb-2 cursor-pointer"
@@ -69,7 +69,7 @@ export default function MathLesson1() {
               <motion.span key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: i * 0.12 }}>{e}</motion.span>
             ))}
           </div>
-          <button onClick={handleNext} className="action-btn bg-gradient-to-r from-rose-500 to-pink-500 text-white w-full">
+          <button onClick={handleNext} className="action-btn tap-target bg-gradient-to-r from-rose-500 to-pink-500 text-white w-full">
             {current < NUMBERS.length - 1 ? 'अगला →' : 'शाबाश! 🎉'}
           </button>
         </motion.div>
