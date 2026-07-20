@@ -147,6 +147,16 @@ function App() {
   const profile = useActiveProfile();
   const userScore = profile?.userScore || 0;
   const activeProfileId = useStore(state => state.activeProfileId);
+  const [muted, setMuted] = useState(audioManager.isMuted());
+  const handleSoundToggle = () => {
+    const nextMuted = audioManager.toggleMute();
+    setMuted(nextMuted);
+    if (!nextMuted) {
+      const path = window.location.pathname;
+      const scene = path.startsWith('/math') ? 'math' : path.startsWith('/english') ? 'english' : path.startsWith('/hindi') ? 'hindi' : path.startsWith('/garden') ? 'garden' : path.startsWith('/art') ? 'drawing' : 'home';
+      audioManager.playMusic(scene);
+    }
+  };
 
   return (
     <BrowserRouter>
@@ -160,7 +170,7 @@ function App() {
             <HomeIcon className="w-8 h-8 text-black dark:text-white" /> AVSAR Kids
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center justify-end gap-2 md:gap-3">
             {profile && (
               <div className="flex items-center gap-2">
                 <Link to="/trophies" className="p-3 rounded-full bg-yellow-400 text-slate-900 border-2 border-black dark:border-white shadow-sm hover:-translate-y-1 hover:bg-yellow-300 active:translate-y-1 transition-all" title="Trophy Room">
@@ -183,8 +193,16 @@ function App() {
               </div>
             )}
             <button
+              onClick={handleSoundToggle}
+              className="tap-target rounded-full bg-white/90 dark:bg-slate-800 border border-white/70 dark:border-white/10 p-3 shadow-sm hover:-translate-y-1 active:translate-y-1 transition-all"
+              aria-label={muted ? 'Turn sound on' : 'Turn sound off'}
+              title={muted ? 'Turn sound on' : 'Turn sound off'}
+            >
+              {muted ? <VolumeX className="w-5 h-5 text-rose-500" /> : <Volume2 className="w-5 h-5 text-emerald-500" />}
+            </button>
+            <button
               onClick={toggleTheme}
-              className="p-3 rounded-full bg-white dark:bg-slate-800 border-4 border-black dark:border-white hover:-translate-y-1 active:translate-y-1 transition-all"
+              className="tap-target rounded-full bg-white/90 dark:bg-slate-800 border border-white/70 dark:border-white/10 p-3 shadow-sm hover:-translate-y-1 active:translate-y-1 transition-all"
             >
               {theme === 'light'
                 ? <Moon className="w-6 h-6 text-black" />

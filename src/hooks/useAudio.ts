@@ -51,7 +51,7 @@ export function useAudio() {
   }, []);
 
   const speak = useCallback((text: string, lang: string = 'hi-IN') => {
-    if ('speechSynthesis' in window) {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = lang;
@@ -65,7 +65,7 @@ export function useAudio() {
   }, [getVoice]);
 
   const speakHindi = useCallback((text: string) => {
-    if ('speechSynthesis' in window) {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'hi-IN';
@@ -79,7 +79,7 @@ export function useAudio() {
   }, [getVoice]);
 
   const speakEnglish = useCallback((text: string) => {
-    if ('speechSynthesis' in window) {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
@@ -94,7 +94,7 @@ export function useAudio() {
 
   const cheerHindi = useCallback(() => {
     const phrase = HINDI_CHEER_PHRASES[Math.floor(Math.random() * HINDI_CHEER_PHRASES.length)];
-    if ('speechSynthesis' in window) {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(phrase);
       utterance.lang = 'hi-IN';
