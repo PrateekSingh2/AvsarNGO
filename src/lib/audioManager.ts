@@ -63,9 +63,7 @@ class AudioManager {
   }
 
   stopMusic() { if (this.loop) window.clearInterval(this.loop); this.loop = null; this.musicGain?.disconnect(); this.musicGain = null; }
-  toggleMute() { this.muted = !this.muted; if (this.muted) { this.stopMusic(); window.speechSynthesis?.cancel(); } return this.muted; }
-  setMuted(value: boolean) { this.muted = value; if (value) { this.stopMusic(); window.speechSynthesis?.cancel(); } return this.muted; }
-  isMuted() { return this.muted; }
+  toggleMute() { this.muted = !this.muted; if (this.muted) this.stopMusic(); return this.muted; }
 }
 
 export const audioManager = new AudioManager();
