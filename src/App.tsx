@@ -13,8 +13,6 @@ import EnglishHub from './pages/english/index';
 import HindiHub from './pages/hindi/index';
 import TrophyRoom from './pages/TrophyRoom';
 import ParentDashboard from './pages/ParentDashboard';
-import ArtStudio from './pages/ArtStudio';
-import { LearningCompanion } from './components/kids/LearningCompanion';
 import { AvaBubble, MagicCard, UniverseLink, XPBar } from './components/kids/KidsUI';
 import { levelFromXp } from './lib/gamification';
 import { audioManager } from './lib/audioManager';
@@ -72,11 +70,12 @@ const Home = () => {
     { to: '/english', emoji: '🔤', title: 'Alphabet Forest', subtitle: 'Letters and words', gradient: 'from-emerald-400 to-teal-500' },
     { to: '/english/lessons/3', emoji: '📖', title: 'Reading Valley', subtitle: 'Story practice', gradient: 'from-sky-400 to-indigo-500' },
     { to: '/hindi', emoji: '🕉️', title: 'Hindi Kingdom', subtitle: 'स्वर और व्यंजन', gradient: 'from-violet-400 to-fuchsia-500' },
-    { to: '/art', emoji: '🎨', title: 'Art Studio', subtitle: 'Draw and create', gradient: 'from-amber-300 to-pink-500' },
+    { to: '#art', emoji: '🎨', title: 'Art Studio', subtitle: 'Draw and create', gradient: 'from-amber-300 to-pink-500' },
     { to: '/garden', emoji: '🌻', title: 'Nature Garden', subtitle: 'Grow rewards', gradient: 'from-lime-400 to-green-600' },
     { to: '/trophies', emoji: '🏆', title: 'Rewards Castle', subtitle: 'Badges and trophies', gradient: 'from-yellow-300 to-orange-500' },
   ];
 
+  useEffect(() => { audioManager.playMusic('home'); return () => audioManager.stopMusic(); }, []);
 
   return <>
     <AnimatePresence>{showCanvas && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] bg-slate-950"><button onClick={() => setShowCanvas(false)} className="absolute top-4 left-1/2 -translate-x-1/2 z-[210] action-btn bg-white">Close Studio ❌</button><CanvasDrawer fullScreen /></motion.div>}</AnimatePresence>
@@ -85,7 +84,7 @@ const Home = () => {
         <MagicCard className="p-6 md:p-8 overflow-hidden relative"><div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,.35),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(96,165,250,.25),transparent_35%)]" /><div className="relative grid sm:grid-cols-[auto_1fr] gap-5 items-center"><motion.div animate={{ y: [0,-10,0] }} transition={{ repeat: Infinity, duration: 3 }} className="text-8xl rounded-[2rem] bg-white/70 p-5 shadow-xl">{profile?.avatar || '🧒'}</motion.div><div><p className="text-lg font-black text-violet-600">AVSAR KIDS UNIVERSE</p><h1 className="text-4xl md:text-6xl font-black leading-tight">Welcome Back Explorer!</h1><div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 font-black"><span>Level {level.level} Explorer</span><span>⭐ {profile?.userScore ?? 0} Stars</span><span>🔥 {profile?.streak ?? 7} Day Streak</span><span>🏆 {profile?.badges?.length ?? 1} Achievements</span></div><div className="mt-5"><XPBar value={level.progress} label={`${xp} XP toward next level`} /></div><p className="mt-4 rounded-2xl bg-white/65 p-3 font-bold">Current mission: Help AVA unlock today’s treasure chest.</p></div></div></MagicCard>
         <AvaBubble><p className="text-xl">Hi, I’m AVA! Tap a magical world, listen carefully, and collect XP, stars, seeds, stickers, pets, and badges. 🌟</p></AvaBubble>
       </div>
-      <div><h2 className="text-3xl font-black mb-4">Learning Universe</h2><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">{locations.map((l) => <UniverseLink key={l.title} {...l} />)}</div></div>
+      <div><h2 className="text-3xl font-black mb-4">Learning Universe</h2><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">{locations.map((l) => l.to === '#art' ? <button key={l.title} onClick={() => { audioManager.playSound('click'); setShowCanvas(true); }} className="text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300 rounded-[2rem]"><MagicCard className={`min-h-40 p-5 bg-gradient-to-br ${l.gradient}`}><div className="text-6xl">{l.emoji}</div><h3 className="mt-3 text-2xl font-black text-white">{l.title}</h3><p className="font-bold text-white/85">{l.subtitle}</p></MagicCard></button> : <UniverseLink key={l.title} {...l} />)}</div></div>
       <div className="grid lg:grid-cols-3 gap-4"><MagicCard className="p-5 lg:col-span-2"><h2 className="text-2xl font-black mb-4">Daily Missions</h2><div className="grid md:grid-cols-3 gap-3">{missions.map(m=><div key={m} className="rounded-2xl bg-white/70 p-4 font-black"><span className="text-2xl">✨</span><p>{m}</p><small>Reward: +50 XP · +10 Stars</small></div>)}</div></MagicCard><MagicCard className="p-5"><h2 className="text-2xl font-black mb-4">Continue Learning</h2><Link to="/math/lessons/1" className="block rounded-2xl bg-white/70 p-4 font-black hover:bg-yellow-100">🧮 Counting 1 to 5</Link><Link to="/english/games/letter-hunt" className="mt-3 block rounded-2xl bg-white/70 p-4 font-black hover:bg-yellow-100">🔤 Letter Hunt</Link></MagicCard></div>
     </section>
   </>;
@@ -97,7 +96,7 @@ const AnimatedRoutes = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    const scene = path.startsWith('/math') ? 'math' : path.startsWith('/english') ? 'english' : path.startsWith('/hindi') ? 'hindi' : path.startsWith('/garden') ? 'garden' : path.startsWith('/art') ? 'drawing' : 'home';
+    const scene = path.startsWith('/math') ? 'math' : path.startsWith('/english') ? 'english' : path.startsWith('/hindi') ? 'hindi' : path.startsWith('/garden') ? 'garden' : 'home';
     audioManager.playMusic(scene);
     return () => audioManager.stopMusic();
   }, [location.pathname]);
@@ -109,7 +108,6 @@ const AnimatedRoutes = () => {
         <Route path="/garden" element={<motion.div {...t}><VirtualGarden /></motion.div>} />
         <Route path="/trophies" element={<motion.div {...t}><TrophyRoom /></motion.div>} />
         <Route path="/parents" element={<motion.div {...t}><ParentDashboard /></motion.div>} />
-        <Route path="/art" element={<motion.div {...t}><ArtStudio /></motion.div>} />
 
         {/* MATH */}
         <Route path="/math" element={<motion.div {...t}><MathHub /></motion.div>} />
