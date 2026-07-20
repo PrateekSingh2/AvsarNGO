@@ -31,9 +31,9 @@ export default function EnglishLesson1() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center">
       <div className="w-full max-w-4xl flex justify-between items-center mb-6">
-        <Link to="/english" className="back-btn"><ArrowLeft className="w-5 h-5" /> English</Link>
+        <Link to="/english" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> English</Link>
         <h1 className="text-2xl font-black text-slate-900 dark:text-white drop-shadow-md">🔤 Alphabet A-Z</h1>
         <div className="back-btn font-black text-amber-500 dark:text-yellow-300">{tapped.size}/26</div>
       </div>

@@ -94,6 +94,13 @@ const AnimatedRoutes = () => {
   const location = useLocation();
   const t = { initial: { opacity: 0, x: 30 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -30 }, transition: { duration: 0.28 } };
 
+  useEffect(() => {
+    const path = location.pathname;
+    const scene = path.startsWith('/math') ? 'math' : path.startsWith('/english') ? 'english' : path.startsWith('/hindi') ? 'hindi' : path.startsWith('/garden') ? 'garden' : 'home';
+    audioManager.playMusic(scene);
+    return () => audioManager.stopMusic();
+  }, [location.pathname]);
+
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
