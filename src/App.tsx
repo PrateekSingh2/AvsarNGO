@@ -21,27 +21,33 @@ import { audioManager } from './lib/audioManager';
 import MathLesson1 from './pages/math/lessons/Lesson1';
 import MathLesson2 from './pages/math/lessons/Lesson2';
 import MathLesson3 from './pages/math/lessons/Lesson3';
+import MathLesson4 from './pages/math/lessons/Lesson4';
 import BalloonPop from './pages/math/games/BalloonPop';
 import NumberMatch from './pages/math/games/NumberMatch';
 import NumberTracing from './pages/math/games/NumberTracing';
 import SayTheNumber from './pages/math/games/SayTheNumber';
+import ShapeSort from './pages/math/games/ShapeSort';
 
 // English
 import EnglishLesson1 from './pages/english/lessons/Lesson1';
 import EnglishLesson2 from './pages/english/lessons/Lesson2';
 import EnglishLesson3 from './pages/english/lessons/Lesson3';
+import EnglishLesson4 from './pages/english/lessons/Lesson4';
 import WordBuilder from './pages/english/games/WordBuilder';
 import LetterHunt from './pages/english/games/LetterHunt';
 import LetterTracing from './pages/english/games/LetterTracing';
 import SpeakTheAnimal from './pages/english/games/SpeakTheAnimal';
+import RhymeTime from './pages/english/games/RhymeTime';
 
 // Hindi
 import HindiLesson1 from './pages/hindi/lessons/Lesson1';
 import HindiLesson2 from './pages/hindi/lessons/Lesson2';
 import HindiLesson3 from './pages/hindi/lessons/Lesson3';
+import HindiLesson4 from './pages/hindi/lessons/Lesson4';
 import SwarGrid from './pages/hindi/games/SwarGrid';
 import VyasjanMatch from './pages/hindi/games/VyasjanMatch';
 import SwarTracing from './pages/hindi/games/SwarTracing';
+import ShabdMatch from './pages/hindi/games/ShabdMatch';
 
 const Decoration = () => (
   <>
@@ -114,29 +120,35 @@ const AnimatedRoutes = () => {
         <Route path="/math/lessons/1" element={<motion.div {...t}><MathLesson1 /></motion.div>} />
         <Route path="/math/lessons/2" element={<motion.div {...t}><MathLesson2 /></motion.div>} />
         <Route path="/math/lessons/3" element={<motion.div {...t}><MathLesson3 /></motion.div>} />
+        <Route path="/math/lessons/4" element={<motion.div {...t}><MathLesson4 /></motion.div>} />
         <Route path="/math/games/balloon-pop" element={<motion.div {...t}><BalloonPop /></motion.div>} />
         <Route path="/math/games/number-match" element={<motion.div {...t}><NumberMatch /></motion.div>} />
         <Route path="/math/games/number-tracing" element={<motion.div {...t}><NumberTracing /></motion.div>} />
         <Route path="/math/games/say-the-number" element={<motion.div {...t}><SayTheNumber /></motion.div>} />
+        <Route path="/math/games/shape-sort" element={<motion.div {...t}><ShapeSort /></motion.div>} />
 
         {/* ENGLISH */}
         <Route path="/english" element={<motion.div {...t}><EnglishHub /></motion.div>} />
         <Route path="/english/lessons/1" element={<motion.div {...t}><EnglishLesson1 /></motion.div>} />
         <Route path="/english/lessons/2" element={<motion.div {...t}><EnglishLesson2 /></motion.div>} />
         <Route path="/english/lessons/3" element={<motion.div {...t}><EnglishLesson3 /></motion.div>} />
+        <Route path="/english/lessons/4" element={<motion.div {...t}><EnglishLesson4 /></motion.div>} />
         <Route path="/english/games/word-builder" element={<motion.div {...t}><WordBuilder /></motion.div>} />
         <Route path="/english/games/letter-hunt" element={<motion.div {...t}><LetterHunt /></motion.div>} />
         <Route path="/english/games/letter-tracing" element={<motion.div {...t}><LetterTracing /></motion.div>} />
         <Route path="/english/games/speak-the-animal" element={<motion.div {...t}><SpeakTheAnimal /></motion.div>} />
+        <Route path="/english/games/rhyme-time" element={<motion.div {...t}><RhymeTime /></motion.div>} />
 
         {/* HINDI */}
         <Route path="/hindi" element={<motion.div {...t}><HindiHub /></motion.div>} />
         <Route path="/hindi/lessons/1" element={<motion.div {...t}><HindiLesson1 /></motion.div>} />
         <Route path="/hindi/lessons/2" element={<motion.div {...t}><HindiLesson2 /></motion.div>} />
         <Route path="/hindi/lessons/3" element={<motion.div {...t}><HindiLesson3 /></motion.div>} />
+        <Route path="/hindi/lessons/4" element={<motion.div {...t}><HindiLesson4 /></motion.div>} />
         <Route path="/hindi/games/swar-grid" element={<motion.div {...t}><SwarGrid /></motion.div>} />
         <Route path="/hindi/games/vyasjan-match" element={<motion.div {...t}><VyasjanMatch /></motion.div>} />
         <Route path="/hindi/games/swar-tracing" element={<motion.div {...t}><SwarTracing /></motion.div>} />
+        <Route path="/hindi/games/shabd-match" element={<motion.div {...t}><ShabdMatch /></motion.div>} />
       </Routes>
     </AnimatePresence>
   );

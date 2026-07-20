@@ -16,7 +16,7 @@ export interface Profile {
   inventory?: string[];
 }
 
-const DEFAULT_LEVELS = ['math-lesson-1', 'english-lesson-1', 'hindi-lesson-1'];
+const DEFAULT_LEVELS = ['math-lesson-1', 'math-lesson-4', 'english-lesson-1', 'english-lesson-4', 'hindi-lesson-1', 'hindi-lesson-4'];
 
 interface AppState {
   profiles: Profile[];
