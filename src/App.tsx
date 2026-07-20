@@ -195,6 +195,7 @@ function App() {
 
         <main className="flex-1 w-full max-w-6xl mx-auto px-2 md:px-6">
           <AnimatedRoutes />
+          <LearningCompanion />
         </main>
 
         <footer className="text-center py-3 text-slate-600 dark:text-white/50 text-sm font-semibold">

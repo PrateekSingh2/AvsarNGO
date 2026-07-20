@@ -7,7 +7,7 @@ interface CanvasDrawerProps { bgImage?: string; bgText?: string; onDrawStart?: (
 const colors = ['#ef4444', '#3b82f6', '#22c55e', '#f59e0b', '#8b5cf6', '#ec4899', '#111827'];
 const stickers = ['⭐', '🌈', '🦋', '🌻', '🚀', '🐣'];
 
-export function CanvasDrawer({ bgImage, bgText, onDrawStart, onClear, fullScreen = false }: CanvasDrawerProps) {
+export function CanvasDrawer({ bgImage, bgText, onDrawStart, onClear, onSave, fullScreen = false }: CanvasDrawerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const history = useRef<string[]>([]);
   const redo = useRef<string[]>([]);
