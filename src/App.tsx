@@ -75,6 +75,7 @@ const Home = () => {
     { to: '/trophies', emoji: '🏆', title: 'Rewards Castle', subtitle: 'Badges and trophies', gradient: 'from-yellow-300 to-orange-500' },
   ];
 
+  useEffect(() => { audioManager.playMusic('home'); return () => audioManager.stopMusic(); }, []);
 
   return <>
     <AnimatePresence>{showCanvas && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] bg-slate-950"><button onClick={() => setShowCanvas(false)} className="absolute top-4 left-1/2 -translate-x-1/2 z-[210] action-btn bg-white">Close Studio ❌</button><CanvasDrawer fullScreen /></motion.div>}</AnimatePresence>
