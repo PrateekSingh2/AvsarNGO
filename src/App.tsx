@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useTheme } from './theme/ThemeContext';
-import { Moon, Sun, Star, Home as HomeIcon, LogOut, Trophy } from 'lucide-react';
+import { Moon, Sun, Star, Home as HomeIcon, LogOut, Trophy, BarChart3, Volume2, VolumeX } from 'lucide-react';
 import { useStore, useActiveProfile } from './store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -12,6 +12,12 @@ import MathHub from './pages/math/index';
 import EnglishHub from './pages/english/index';
 import HindiHub from './pages/hindi/index';
 import TrophyRoom from './pages/TrophyRoom';
+import ParentDashboard from './pages/ParentDashboard';
+import ArtStudio from './pages/ArtStudio';
+import LearningCompanion from './components/kids/LearningCompanion';
+import { AvaBubble, MagicCard, UniverseLink, XPBar } from './components/kids/KidsUI';
+import { levelFromXp } from './lib/gamification';
+import { audioManager } from './lib/audioManager';
 
 // Math
 import MathLesson1 from './pages/math/lessons/Lesson1';
@@ -57,96 +63,44 @@ const Decoration = () => (
 
 const Home = () => {
   const profile = useActiveProfile();
-  const userScore = profile?.userScore || 0;
   const [showCanvas, setShowCanvas] = useState(false);
-  const subjects = [
-    { to: '/math', emoji: '🔢', label: 'गणित', sublabel: 'Math', from: 'from-rose-500', to2: 'to-pink-600', border: 'border-rose-700', shadow: 'rgba(244,63,94,0.4)', rotate: '-rotate-3' },
-    { to: '/english', emoji: '🔤', label: 'अंग्रेज़ी', sublabel: 'English', from: 'from-emerald-500', to2: 'to-teal-500', border: 'border-emerald-700', shadow: 'rgba(16,185,129,0.4)', rotate: 'rotate-2' },
-    { to: '/hindi', emoji: 'अ', label: 'हिंदी', sublabel: 'Hindi', from: 'from-violet-500', to2: 'to-purple-600', border: 'border-violet-700', shadow: 'rgba(139,92,246,0.4)', rotate: '-rotate-2' },
-    { to: '/garden', emoji: '🌻', label: 'बगीचा', sublabel: 'Garden', from: 'from-amber-400', to2: 'to-orange-500', border: 'border-amber-600', shadow: 'rgba(245,158,11,0.4)', rotate: 'rotate-3' },
+  const xp = profile?.xp ?? profile?.userScore ?? 0;
+  const level = levelFromXp(xp);
+  const missions = ['Complete 1 Math Lesson', 'Complete 1 English Game', 'Practice Hindi'];
+  const locations = [
+    { to: '/math', emoji: '🧮', title: 'Number Island', subtitle: 'Math adventures', gradient: 'from-rose-400 to-orange-500' },
+    { to: '/english', emoji: '🔤', title: 'Alphabet Forest', subtitle: 'Letters and words', gradient: 'from-emerald-400 to-teal-500' },
+    { to: '/english/lessons/3', emoji: '📖', title: 'Reading Valley', subtitle: 'Story practice', gradient: 'from-sky-400 to-indigo-500' },
+    { to: '/hindi', emoji: '🕉️', title: 'Hindi Kingdom', subtitle: 'स्वर और व्यंजन', gradient: 'from-violet-400 to-fuchsia-500' },
+    { to: '/art', emoji: '🎨', title: 'Art Studio', subtitle: 'Draw and create', gradient: 'from-amber-300 to-pink-500' },
+    { to: '/garden', emoji: '🌻', title: 'Nature Garden', subtitle: 'Grow rewards', gradient: 'from-lime-400 to-green-600' },
+    { to: '/trophies', emoji: '🏆', title: 'Rewards Castle', subtitle: 'Badges and trophies', gradient: 'from-yellow-300 to-orange-500' },
   ];
 
-  return (
-    <>
-      <AnimatePresence>
-        {showCanvas && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] flex flex-col w-full h-full"
-          >
-            <div className="absolute top-4 left-4 z-[210] flex items-center gap-4">
-              <h2 className="text-3xl font-black text-white dark:text-black drop-shadow-md">🎨 Drawingboard</h2>
-            </div>
-            <button onClick={() => setShowCanvas(false)} className="absolute top-4 left-1/2 -translate-x-1/2 z-[210] back-btn bg-rose-500 text-white shadow-[6px_6px_0px_rgba(0,0,0,1)]">Close ❌</button>
-            <CanvasDrawer fullScreen={true} />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.4 }}
-      className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-4 py-8 text-center"
-    >
-      <motion.div
-        initial={{ scale: 0.7, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", bounce: 0.55, delay: 0.1 }}
-        className="mb-4"
-      >
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-slate-900 dark:text-white drop-shadow-md mb-2">
-          🎓 EduPlay
-        </h1>
-        <p className="text-slate-700 dark:text-white/80 text-xl font-semibold">खेलो, सीखो, बढ़ो!</p>
-      </motion.div>
-
-      <motion.div
-        initial={{ scale: 0 }} animate={{ scale: 1 }}
-        transition={{ delay: 0.3, type: "spring", bounce: 0.6 }}
-        className="score-badge mb-10"
-      >
-        <Star className="w-8 h-8 text-yellow-400 fill-yellow-400 drop-shadow animate-pulse" />
-        <span className="text-2xl font-black text-amber-600 dark:text-yellow-300">{userScore} तारे!</span>
-      </motion.div>
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 w-full max-w-5xl">
-        {subjects.map((s, i) => (
-          <Link key={s.to} to={s.to} className="group">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 * i + 0.4, type: "spring", bounce: 0.4 }}
-              whileHover={{ scale: 1.05, rotate: 0 }}
-              whileTap={{ scale: 0.95 }}
-              className={`sticker-card ${s.rotate} bg-gradient-to-br ${s.from} ${s.to2} p-6 md:p-8 min-h-[180px] md:min-h-[220px]`}
-            >
-              <span className="text-5xl md:text-7xl mb-3 block drop-shadow-lg group-hover:scale-110 transition-transform duration-200">
-                {s.emoji}
-              </span>
-              <p className="text-white font-black text-lg md:text-2xl drop-shadow">{s.sublabel}</p>
-              <p className="text-white/70 font-bold text-sm md:text-base">{s.label}</p>
-            </motion.div>
-          </Link>
-        ))}
+  return <>
+    <AnimatePresence>{showCanvas && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[200] bg-slate-950"><button onClick={() => setShowCanvas(false)} className="absolute top-4 left-1/2 -translate-x-1/2 z-[210] action-btn bg-white">Close Studio ❌</button><CanvasDrawer fullScreen /></motion.div>}</AnimatePresence>
+    <section className="px-3 py-6 md:py-10 space-y-8">
+      <div className="grid lg:grid-cols-[1.25fr_.75fr] gap-6 items-stretch">
+        <MagicCard className="p-6 md:p-8 overflow-hidden relative"><div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,.35),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(96,165,250,.25),transparent_35%)]" /><div className="relative grid sm:grid-cols-[auto_1fr] gap-5 items-center"><motion.div animate={{ y: [0,-10,0] }} transition={{ repeat: Infinity, duration: 3 }} className="text-5xl sm:text-6xl rounded-[1.75rem] bg-white/70 p-4 shadow-xl">{profile?.avatar || '🧒'}</motion.div><div><p className="text-sm sm:text-base font-black text-violet-600">AVSAR KIDS UNIVERSE</p><h1 className="text-3xl md:text-5xl font-black leading-tight">Welcome Back Explorer!</h1><div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3 font-black"><span>Level {level.level} Explorer</span><span>⭐ {profile?.userScore ?? 0} Stars</span><span>🔥 {profile?.streak ?? 7} Day Streak</span><span>🏆 {profile?.badges?.length ?? 1} Achievements</span></div><div className="mt-5"><XPBar value={level.progress} label={`${xp} XP toward next level`} /></div><p className="mt-4 rounded-2xl bg-white/65 p-3 font-bold">Current mission: Help AVA unlock today’s treasure chest.</p></div></div></MagicCard>
+        <AvaBubble><p className="text-base md:text-lg">Hi, I’m AVA! Tap a magical world, listen carefully, and collect XP, stars, seeds, stickers, pets, and badges. 🌟</p></AvaBubble>
       </div>
-      <motion.button
-        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1, type: 'spring' }}
-        whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}
-        onClick={() => setShowCanvas(true)}
-        className="mt-12 bg-white dark:bg-slate-800 px-10 py-5 rounded-full font-black text-slate-900 dark:text-white text-2xl border-4 border-black dark:border-white shadow-[6px_6px_0px_rgba(0,0,0,1)] hover:bg-yellow-100 dark:hover:bg-yellow-900"
-      >
-        🎨 Open Drawingboard!
-      </motion.button>
-    </motion.div>
-    </>
-  );
+      <div><h2 className="text-2xl md:text-3xl font-black mb-4">Learning Universe</h2><div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">{locations.map((l) => <UniverseLink key={l.title} {...l} />)}</div></div>
+      <div className="grid lg:grid-cols-3 gap-4"><MagicCard className="p-5 lg:col-span-2"><h2 className="text-xl md:text-2xl font-black mb-4">Daily Missions</h2><div className="grid md:grid-cols-3 gap-3">{missions.map(m=><div key={m} className="rounded-2xl bg-white/70 p-4 font-black"><span className="text-2xl">✨</span><p>{m}</p><small>Reward: +50 XP · +10 Stars</small></div>)}</div></MagicCard><MagicCard className="p-5"><h2 className="text-xl md:text-2xl font-black mb-4">Continue Learning</h2><Link to="/math/lessons/1" className="block rounded-2xl bg-white/70 p-4 font-black hover:bg-yellow-100">🧮 Counting 1 to 5</Link><Link to="/english/games/letter-hunt" className="mt-3 block rounded-2xl bg-white/70 p-4 font-black hover:bg-yellow-100">🔤 Letter Hunt</Link></MagicCard></div>
+    </section>
+  </>;
 };
 
 const AnimatedRoutes = () => {
   const location = useLocation();
   const t = { initial: { opacity: 0, x: 30 }, animate: { opacity: 1, x: 0 }, exit: { opacity: 0, x: -30 }, transition: { duration: 0.28 } };
+
+  useEffect(() => {
+    const path = location.pathname;
+    const scene = path.startsWith('/math') ? 'math' : path.startsWith('/english') ? 'english' : path.startsWith('/hindi') ? 'hindi' : path.startsWith('/garden') ? 'garden' : path.startsWith('/art') ? 'drawing' : 'home';
+    audioManager.playMusic(scene);
+    return () => audioManager.stopMusic();
+  }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait">
@@ -154,6 +108,8 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/garden" element={<motion.div {...t}><VirtualGarden /></motion.div>} />
         <Route path="/trophies" element={<motion.div {...t}><TrophyRoom /></motion.div>} />
+        <Route path="/parents" element={<motion.div {...t}><ParentDashboard /></motion.div>} />
+        <Route path="/art" element={<motion.div {...t}><ArtStudio /></motion.div>} />
 
         {/* MATH */}
         <Route path="/math" element={<motion.div {...t}><MathHub /></motion.div>} />
@@ -193,6 +149,16 @@ function App() {
   const profile = useActiveProfile();
   const userScore = profile?.userScore || 0;
   const activeProfileId = useStore(state => state.activeProfileId);
+  const [muted, setMuted] = useState(audioManager.isMuted());
+  const handleSoundToggle = () => {
+    const nextMuted = audioManager.toggleMute();
+    setMuted(nextMuted);
+    if (!nextMuted) {
+      const path = window.location.pathname;
+      const scene = path.startsWith('/math') ? 'math' : path.startsWith('/english') ? 'english' : path.startsWith('/hindi') ? 'hindi' : path.startsWith('/garden') ? 'garden' : path.startsWith('/art') ? 'drawing' : 'home';
+      audioManager.playMusic(scene);
+    }
+  };
 
   return (
     <BrowserRouter>
@@ -201,17 +167,18 @@ function App() {
         
         {!activeProfileId && <ProfileSelect />}
 
-        <nav className="sticky top-0 z-50 flex items-center justify-between px-4 md:px-8 py-3 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl border-b-4 border-black dark:border-white">
-          <Link to="/" className="flex items-center gap-2 font-black text-2xl text-black dark:text-white cursor-pointer hover:scale-105 transition-transform">
-            <HomeIcon className="w-8 h-8 text-black dark:text-white" /> EduPlay
+        <nav className="sticky top-0 z-50 flex flex-wrap items-center justify-between gap-3 px-3 py-3 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl border-b border-white/60 dark:border-white/10 shadow-sm">
+          <Link to="/" className="flex items-center gap-2 font-black text-xl md:text-2xl text-black dark:text-white cursor-pointer hover:scale-105 transition-transform">
+            <HomeIcon className="w-8 h-8 text-black dark:text-white" /> AVSAR Kids
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center justify-end gap-2 md:gap-3">
             {profile && (
               <div className="flex items-center gap-2">
                 <Link to="/trophies" className="p-3 rounded-full bg-yellow-400 text-slate-900 border-2 border-black dark:border-white shadow-sm hover:-translate-y-1 hover:bg-yellow-300 active:translate-y-1 transition-all" title="Trophy Room">
                   <Trophy className="w-6 h-6" />
                 </Link>
+                <Link to="/parents" className="p-3 rounded-full bg-sky-400 text-slate-900 border-2 border-black dark:border-white shadow-sm hover:-translate-y-1 transition-all" title="Parent Dashboard"><BarChart3 className="w-6 h-6" /></Link>
                 <div className="score-badge hidden sm:flex bg-white dark:bg-slate-800">
                   <span className="text-xl mr-2">{profile.avatar}</span>
                   <span className="font-bold text-black dark:text-white mr-3">{profile.name}</span>
@@ -228,8 +195,16 @@ function App() {
               </div>
             )}
             <button
+              onClick={handleSoundToggle}
+              className="tap-target rounded-full bg-white/90 dark:bg-slate-800 border border-white/70 dark:border-white/10 p-3 shadow-sm hover:-translate-y-1 active:translate-y-1 transition-all"
+              aria-label={muted ? 'Turn sound on' : 'Turn sound off'}
+              title={muted ? 'Turn sound on' : 'Turn sound off'}
+            >
+              {muted ? <VolumeX className="w-5 h-5 text-rose-500" /> : <Volume2 className="w-5 h-5 text-emerald-500" />}
+            </button>
+            <button
               onClick={toggleTheme}
-              className="p-3 rounded-full bg-white dark:bg-slate-800 border-4 border-black dark:border-white hover:-translate-y-1 active:translate-y-1 transition-all"
+              className="tap-target rounded-full bg-white/90 dark:bg-slate-800 border border-white/70 dark:border-white/10 p-3 shadow-sm hover:-translate-y-1 active:translate-y-1 transition-all"
             >
               {theme === 'light'
                 ? <Moon className="w-6 h-6 text-black" />
@@ -240,10 +215,11 @@ function App() {
 
         <main className="flex-1 w-full max-w-6xl mx-auto px-2 md:px-6">
           <AnimatedRoutes />
+          <LearningCompanion />
         </main>
 
         <footer className="text-center py-3 text-slate-600 dark:text-white/50 text-sm font-semibold">
-          EduPlay &copy; 2025 · खेलो और सीखो! 🌟
+          AVSAR Kids &copy; 2025 · खेलो और सीखो! 🌟
         </footer>
       </div>
     </BrowserRouter>

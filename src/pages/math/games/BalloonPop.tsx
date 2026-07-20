@@ -29,11 +29,11 @@ export default function BalloonPop() {
   const reset = () => { setBalloons([1,2,3,4,5]); setPoppedCount(0); };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center">
       <div className="w-full max-w-3xl flex justify-between items-center mb-8">
-        <Link to="/math" className="back-btn"><ArrowLeft className="w-5 h-5" /> गणित</Link>
+        <Link to="/math" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> गणित</Link>
         <h1 className="text-2xl md:text-3xl font-black text-white text-shadow">🎈 गुब्बारे फोड़ो!</h1>
-        <div className="glass-card px-5 py-2 text-3xl font-black text-white text-shadow min-w-[80px] text-center">
+        <div className="learning-card px-5 py-2 text-3xl font-black text-white text-shadow min-w-[80px] text-center">
           {poppedCount}
         </div>
       </div>
