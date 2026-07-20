@@ -64,6 +64,7 @@ class AudioManager {
 
   stopMusic() { if (this.loop) window.clearInterval(this.loop); this.loop = null; this.musicGain?.disconnect(); this.musicGain = null; }
   toggleMute() { this.muted = !this.muted; if (this.muted) this.stopMusic(); return this.muted; }
+  isMuted() { return this.muted; }
 }
 
 export const audioManager = new AudioManager();

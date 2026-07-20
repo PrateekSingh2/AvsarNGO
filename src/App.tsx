@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useTheme } from './theme/ThemeContext';
-import { Moon, Sun, Star, Home as HomeIcon, LogOut, Trophy, BarChart3 } from 'lucide-react';
+import { Moon, Sun, Star, Home as HomeIcon, LogOut, Trophy, BarChart3, VolumeX, Volume2 } from 'lucide-react';
 import { useStore, useActiveProfile } from './store/useStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -14,6 +14,7 @@ import HindiHub from './pages/hindi/index';
 import TrophyRoom from './pages/TrophyRoom';
 import ParentDashboard from './pages/ParentDashboard';
 import { AvaBubble, MagicCard, UniverseLink, XPBar } from './components/kids/KidsUI';
+import { LearningCompanion } from './components/kids/LearningCompanion';
 import { levelFromXp } from './lib/gamification';
 import { audioManager } from './lib/audioManager';
 
