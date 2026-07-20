@@ -37,9 +37,9 @@ export default function EnglishLesson2() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-5rem)] px-4 py-8 flex flex-col items-center justify-center">
+    <div className="lesson-screen px-4 py-8 flex flex-col items-center justify-center">
       <div className="absolute top-4 left-4 md:top-8 md:left-8">
-        <Link to="/english" className="back-btn"><ArrowLeft className="w-5 h-5" /> English</Link>
+        <Link to="/english" className="back-btn tap-target"><ArrowLeft className="w-5 h-5" /> English</Link>
       </div>
 
       <div className="w-full max-w-lg mb-8">
@@ -62,7 +62,7 @@ export default function EnglishLesson2() {
           </div>
           <h2 className="text-5xl font-black text-slate-900 dark:text-white mb-2 drop-shadow-md">{color.name}</h2>
           <p className="text-slate-700 dark:text-white/70 text-2xl font-bold mb-8">{color.hindi}</p>
-          <button onClick={handleNext} className="action-btn bg-gradient-to-r from-emerald-500 to-teal-500 text-white w-full">
+          <button onClick={handleNext} className="action-btn tap-target bg-gradient-to-r from-emerald-500 to-teal-500 text-white w-full">
             {current < COLORS.length - 1 ? 'Next Color →' : 'Done! 🎉'}
           </button>
         </motion.div>

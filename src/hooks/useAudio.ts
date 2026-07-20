@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import confetti from 'canvas-confetti';
+import { audioManager } from '../lib/audioManager';
 
 // Hindi audio phrases using Web Speech API with hi-IN locale
 const HINDI_CHEER_PHRASES = [
@@ -50,7 +51,7 @@ export function useAudio() {
   }, []);
 
   const speak = useCallback((text: string, lang: string = 'hi-IN') => {
-    if ('speechSynthesis' in window) {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = lang;
@@ -64,7 +65,7 @@ export function useAudio() {
   }, [getVoice]);
 
   const speakHindi = useCallback((text: string) => {
-    if ('speechSynthesis' in window) {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'hi-IN';
@@ -78,7 +79,7 @@ export function useAudio() {
   }, [getVoice]);
 
   const speakEnglish = useCallback((text: string) => {
-    if ('speechSynthesis' in window) {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'en-US';
@@ -93,7 +94,7 @@ export function useAudio() {
 
   const cheerHindi = useCallback(() => {
     const phrase = HINDI_CHEER_PHRASES[Math.floor(Math.random() * HINDI_CHEER_PHRASES.length)];
-    if ('speechSynthesis' in window) {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(phrase);
       utterance.lang = 'hi-IN';
@@ -106,6 +107,7 @@ export function useAudio() {
   }, [getVoice]);
 
   const playBoop = useCallback(() => {
+    audioManager.playSound('wrong');
     try {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       const ctx = new AudioContext();
@@ -136,6 +138,7 @@ export function useAudio() {
   }, [speak]);
 
   const playDing = useCallback(() => {
+    audioManager.playSound('correct');
     try {
       const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
       const ctx = new AudioContext();
@@ -154,6 +157,7 @@ export function useAudio() {
   }, []);
 
   const playCheer = useCallback(() => {
+    audioManager.playSound('achievement');
     cheerHindi();
     const duration = 3500;
     const animationEnd = Date.now() + duration;
