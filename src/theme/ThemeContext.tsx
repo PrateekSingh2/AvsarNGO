@@ -20,7 +20,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
+    document.body.classList.remove('light', 'dark');
     root.classList.add(theme);
+    document.body.classList.add(theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 

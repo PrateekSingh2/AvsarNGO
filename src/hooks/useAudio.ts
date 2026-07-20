@@ -64,6 +64,10 @@ export function useAudio() {
     }
   }, [getVoice]);
 
+  const speak = useCallback((text: string, lang: string = 'hi-IN') => {
+    speakWithVoice(text, lang, 1.2);
+  }, [speakWithVoice]);
+
   const speakHindi = useCallback((text: string) => {
     if (!audioManager.isMuted() && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
