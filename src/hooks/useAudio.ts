@@ -50,25 +50,18 @@ export function useAudio() {
     return voice || null;
   }, []);
 
-  const speakWithVoice = useCallback((text: string, lang: string, pitch = 1.2) => {
-    if (audioManager.isMuted() || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = lang;
-    const voice = getVoice(lang);
-    if (voice) utterance.voice = voice;
-    utterance.rate = lang.startsWith('hi') ? 0.68 : 0.78;
-    utterance.pitch = pitch;
-    utterance.volume = 1;
-    utterance.onerror = () => {
-      const retry = new SpeechSynthesisUtterance(text);
-      retry.lang = lang.startsWith('hi') ? 'hi' : lang;
-      retry.rate = 0.7;
-      retry.pitch = pitch;
-      window.speechSynthesis.speak(retry);
-    };
-    window.speechSynthesis.speak(utterance);
+  const speak = useCallback((text: string, lang: string = 'hi-IN') => {
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = lang;
+      const voice = getVoice(lang);
+      if (voice) utterance.voice = voice;
+      utterance.rate = 0.75; // Slower pace for kids
+      utterance.pitch = 1.2;
+      utterance.volume = 1;
+      window.speechSynthesis.speak(utterance);
+    }
   }, [getVoice]);
 
   const speak = useCallback((text: string, lang: string = 'hi-IN') => {
@@ -76,8 +69,18 @@ export function useAudio() {
   }, [speakWithVoice]);
 
   const speakHindi = useCallback((text: string) => {
-    speakWithVoice(text, 'hi-IN', 1.28);
-  }, [speakWithVoice]);
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'hi-IN';
+      const voice = getVoice('hi-IN');
+      if (voice) utterance.voice = voice;
+      utterance.rate = 0.75; // Slower pace for kids
+      utterance.pitch = 1.25;
+      utterance.volume = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+  }, [getVoice]);
 
   const speakEnglish = useCallback((text: string) => {
     if (!audioManager.isMuted() && 'speechSynthesis' in window) {
@@ -95,8 +98,17 @@ export function useAudio() {
 
   const cheerHindi = useCallback(() => {
     const phrase = HINDI_CHEER_PHRASES[Math.floor(Math.random() * HINDI_CHEER_PHRASES.length)];
-    speakWithVoice(phrase, 'hi-IN', 1.4);
-  }, [speakWithVoice]);
+    if (!audioManager.isMuted() && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(phrase);
+      utterance.lang = 'hi-IN';
+      const voice = getVoice('hi-IN');
+      if (voice) utterance.voice = voice;
+      utterance.rate = 0.75; // Slower pace for kids
+      utterance.pitch = 1.4;
+      window.speechSynthesis.speak(utterance);
+    }
+  }, [getVoice]);
 
   const playBoop = useCallback(() => {
     audioManager.playSound('wrong');
